@@ -1,0 +1,75 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1;
+  background-color: #181818;
+}
+
+.header {
+  text-align: center;
+  color: #696969;
+  margin-top: 1.5cm;
+  padding: 0.5cm 0.1cm;
+  font-size: 1cm;
+}
+
+.content {
+  align-items: center;
+  text-align: center;
+}
+
+#letters {
+  color: white;
+  font-weight: bold;
+  font-size: 0.8cm;
+  margin-left: 15px;
+  margin-right: 15px;
+  letter-spacing: 0.15cm;
+}
+
+.text_box {
+  margin-top: 0.3cm;
+  margin-bottom: 0.3cm;
+  width: 7cm;
+  font-size: 20px;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 4px 8px;
+  border-radius: 5px;
+  border: 0.1px solid;
+  outline: none;
+}
+
+#time_display {
+  color: white;
+}
+
+#time_limit {
+  color: red;
+}
+
+.entered_word {
+  background-color: #17B169;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 5px;
+  border: 0.1px solid;
+  margin: 0.1cm;
+}
+
+#entered_words {
+  margin-top: 0.5cm;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 8cm;
+  height: auto;
+}
