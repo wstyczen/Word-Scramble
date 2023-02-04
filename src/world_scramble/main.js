@@ -15,10 +15,12 @@ function scramble(word) {
 
 let entered_words = [];
 let word = "PLAYMAKER";
+
+word = word.toUpperCase();
 let letters = scramble(word);
 
 set_letters(letters);
-let timer = new Timer(10);
+let timer = new Timer(100);
 let text_box = new TextBox(
   letters,
   entered_words,

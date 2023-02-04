@@ -63,6 +63,7 @@ body {
   border-radius: 5px;
   border: 0.1px solid;
   margin: 0.1cm;
+  text-transform: uppercase;
 }
 
 #entered_words {

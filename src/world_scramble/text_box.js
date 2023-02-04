@@ -18,12 +18,16 @@ export class TextBox {
     return document.getElementById("text_box");
   }
 
-  lock_text_box() {
+  clear_contents() {
     this.get_text_box().value = "";
-    this.get_text_box().removeEventListener("keypress", this.on_keypress_cb_);
-    this.get_text_box().addEventListener("keypress", (e) => {
-      return false;
-    });
+  }
+
+  lock_text_box() {
+    this.clear_contents();
+    this.get_text_box().placeholder = "TIME HAS RUN OUT";
+    this.get_text_box().style.backgroundColor = Color.RED;
+    this.get_text_box().style.color = Color.WHITE;
+    this.get_text_box().disabled = true;
   }
 
   flash_text_box(color, callback = null) {
@@ -41,6 +45,8 @@ export class TextBox {
 
     // Remove any non letters
     t.value = t.value.replace(/[^a-zA-Z]/gi, "");
+    // Switch to upper case
+    t.value = t.value.toUpperCase();
 
     // Check if using only available letters
     let letter_frequency = [...letters].reduce((letter_frequency, c) => {
@@ -55,7 +61,7 @@ export class TextBox {
       letter_frequency[c]--;
     }
 
-    if (t.value != starting_value) this.flash_text_box(Color.RED);
+    if (t.value.length != starting_value.length) this.flash_text_box(Color.RED);
   }
 
   on_key_press(entered_words, event) {
@@ -66,15 +72,19 @@ export class TextBox {
       }
       entered_words.push(this.get_text_box().value);
       add_entered_word_to_display(this.get_text_box().value);
-      const get_text_box_cb = this.get_text_box.bind(this);
+      const clear_contents_cb = this.clear_contents.bind(this);
       this.flash_text_box(Color.GREEN, function () {
-        get_text_box_cb().value = "";
+        clear_contents_cb();
       });
       console.log(entered_words);
     }
   }
 
   is_valid_word(entered_words, word) {
+    if (word.length == 0) {
+      this.flash_warning_cb_("No solution!");
+      return false;
+    }
     if (entered_words.includes(word)) {
       this.flash_warning_cb_("Word already entered!");
       return false;
