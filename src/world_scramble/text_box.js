@@ -18,6 +18,14 @@ export class TextBox {
     return document.getElementById("text_box");
   }
 
+  lock_text_box() {
+    this.get_text_box().value = "";
+    this.get_text_box().removeEventListener("keypress", this.on_keypress_cb_);
+    this.get_text_box().addEventListener("keypress", (e) => {
+      return false;
+    });
+  }
+
   flash_text_box(color, callback = null) {
     this.get_text_box().style.backgroundColor = color;
     const get_text_box_cb = this.get_text_box.bind(this);

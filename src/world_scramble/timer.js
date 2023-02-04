@@ -1,10 +1,10 @@
 import { Color } from "./utility.js";
 
 export class Timer {
-  constructor(time_limit, on_timer_finished_cb) {
+  constructor(time_limit, on_timer_finished_cb = null) {
     this.time_ = time_limit;
     this.timer_ = this.init_timer();
-    this.on_timer_finished_cb_ = on_timer_finished_cb;
+    this.on_timer_finished_cb_ = null;
   }
 
   init_timer() {
@@ -17,7 +17,12 @@ export class Timer {
       }
       clearInterval(this.time_);
       this.set_time_text("Time has run out!");
+      this.on_timer_finished_cb_();
     }, 1000);
+  }
+
+  set_on_timer_finished_cb(on_timer_finished_cb) {
+    this.on_timer_finished_cb_ = on_timer_finished_cb;
   }
 
   get_time_display_text() {

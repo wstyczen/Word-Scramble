@@ -1,8 +1,6 @@
 import { Timer } from "./timer.js";
 import { TextBox } from "./text_box.js";
 
-let timer = new Timer(10, on_time_limit_reached.bind(this));
-
 function set_letters(text) {
   document.getElementById("letters").innerHTML = text;
 }
@@ -18,10 +16,12 @@ function scramble(word) {
 let entered_words = [];
 let word = "PLAYMAKER";
 let letters = scramble(word);
+
+set_letters(letters);
+let timer = new Timer(10);
 let text_box = new TextBox(
   letters,
   entered_words,
   timer.flash_warning.bind(timer)
 );
-
-set_letters(letters);
+timer.set_on_timer_finished_cb(text_box.lock_text_box.bind(text_box));
