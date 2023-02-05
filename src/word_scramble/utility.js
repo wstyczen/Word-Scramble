@@ -5,10 +5,11 @@ export const Color = {
   WHITE: "#FFFFFF",
 };
 
-export function add_entered_word_to_display(word) {
+export function add_entered_word_to_display(word, url) {
   let button = document.createElement("button");
   button.className = "entered_word";
   button.appendChild(document.createTextNode(word));
+  button.onclick = window.open.bind(this, url);
   document.getElementById("entered_words").appendChild(button);
 }
 

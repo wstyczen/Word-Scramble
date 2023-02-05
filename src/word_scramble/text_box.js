@@ -80,7 +80,7 @@ export class TextBox {
     const word = this.get_text_box().value;
     if (event.key === "Enter") {
       console.log("in on_key_press: ", entered_words);
-      if (!this.is_anagram(entered_words, word)) {
+      if (!this.is_part_anagram(entered_words, word)) {
         this.flash_text_box(Color.RED);
         return;
       }
@@ -90,7 +90,7 @@ export class TextBox {
         return;
       }
       entered_words[word] = dict_url;
-      add_entered_word_to_display(word);
+      add_entered_word_to_display(word, dict_url);
       const clear_contents_cb = this.clear_contents.bind(this);
       this.flash_text_box(Color.GREEN, function () {
         clear_contents_cb();
@@ -99,7 +99,7 @@ export class TextBox {
     }
   }
 
-  is_anagram(entered_words, word) {
+  is_part_anagram(entered_words, word) {
     if (word.length == 0) {
       this.flash_warning_cb_("No solution!");
       return false;

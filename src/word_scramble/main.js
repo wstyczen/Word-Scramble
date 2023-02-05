@@ -21,10 +21,6 @@ function scramble(word) {
   return [...word].sort(() => Math.random() - 0.5).join("");
 }
 
-// const word = "playmakers";
-// const result = await get_dict_url(word);
-// console.log(word, result);
-
 let timer = new Timer(30);
 let text_box = new TextBox(timer.flash_warning.bind(timer));
 
