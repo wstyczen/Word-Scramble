@@ -1,0 +1,30 @@
+.sidebar_container {}
+
+.sidebar_button {
+  color: white;
+  margin: 0.1cm 0.1cm;
+  font-size: 0.6cm;
+  display: inline-block;
+  transform: scaleY(0.6);
+  transform-origin: 0 0;
+  width: 2cm
+}
+
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: -1.3cm;
+  background-color: #202020;
+  transition: .2s
+}
+
+.sidebar {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}

@@ -6,9 +6,20 @@
     <link rel="stylesheet" href="word_scramble.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="module" src="main.js" defer></script>
+
+    <script type="module" src="sidebar.js" defer></script>
+    <link rel="stylesheet" href="sidebar.css">
   </head>
+
+
   <body>
-    <div class="container">
+    <div class="sidebar_container">
+      <span class="sidebar_button" id="sidebar_button">&#9776;</span>
+      <div id="sidebar" class="sidebar">
+
+      </div>
+    </div>
+    <div class="main_container" id="main_container">
       <h2 class="header">Word Scramble</h2>
       <div class="content">
         <p id="letters"></p>

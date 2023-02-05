@@ -1,4 +1,9 @@
-import { Color, get_dict_url } from "./utility.js";
+import {
+  Color,
+  get_dict_url,
+  get_letter_frequency,
+  set_letters,
+} from "./utility.js";
 import { add_entered_word_to_display } from "./utility.js";
 
 export class TextBox {
@@ -7,6 +12,8 @@ export class TextBox {
   }
 
   reset(letters, entered_words) {
+    this.letters_ = letters;
+    set_letters(letters, "");
     // To remove listeners - removeEventListener does not work with anything but
     // named, free functions
     let text_box = this.get_text_box();
@@ -15,7 +22,7 @@ export class TextBox {
 
     this.get_text_box().addEventListener(
       "input",
-      this.filter_contents.bind(this, letters)
+      this.filter_contents.bind(this)
     );
     this.get_text_box().addEventListener(
       "keypress",
@@ -29,6 +36,7 @@ export class TextBox {
 
   clear_contents() {
     this.get_text_box().value = "";
+    set_letters(this.letters_, "");
   }
 
   lock_text_box() {
@@ -51,7 +59,11 @@ export class TextBox {
     }, 100);
   }
 
-  filter_contents(letters, e) {
+  get_input_text() {
+    return this.get_text_box().text;
+  }
+
+  filter_contents(e) {
     let t = e.target;
     const starting_value = t.value;
 
@@ -61,10 +73,7 @@ export class TextBox {
     t.value = t.value.toUpperCase();
 
     // Check if using only available letters
-    let letter_frequency = [...letters].reduce((letter_frequency, c) => {
-      letter_frequency[c] = letter_frequency[c] ? letter_frequency[c] + 1 : 1;
-      return letter_frequency;
-    }, {});
+    let letter_frequency = get_letter_frequency(this.letters_);
     for (const c of t.value) {
       if (!letter_frequency[c] || letter_frequency[c] == 0) {
         t.value = t.value.slice(0, -1);
@@ -73,7 +82,11 @@ export class TextBox {
       letter_frequency[c]--;
     }
 
-    if (t.value.length != starting_value.length) this.flash_text_box(Color.RED);
+    if (t.value.length != starting_value.length) {
+      this.flash_warning_cb_("Invalid letter!");
+      this.flash_text_box(Color.RED);
+    }
+    set_letters(this.letters_, t.value);
   }
 
   async on_key_press(entered_words, event) {
@@ -95,6 +108,7 @@ export class TextBox {
       this.flash_text_box(Color.GREEN, function () {
         clear_contents_cb();
       });
+      set_letters(this.letters_, "");
     }
   }
 

@@ -1,10 +1,11 @@
 import { Timer } from "./timer.js";
 import { TextBox } from "./text_box.js";
-import { clear_all_words_from_display, get_random_word } from "./utility.js";
-
-function set_letters(text) {
-  document.getElementById("letters").innerHTML = text;
-}
+import {
+  clear_all_words_from_display,
+  close_sidebar,
+  get_random_word,
+  open_sidebar,
+} from "./utility.js";
 
 function on_time_limit_reached(cb) {
   cb();
@@ -20,19 +21,27 @@ function scramble(word) {
   return [...word].sort(() => Math.random() - 0.5).join("");
 }
 
-let timer = new Timer(90);
+let time_limit = 90;
+let word_length = 10;
+
+let timer = new Timer(time_limit);
 let text_box = new TextBox(timer.flash_warning.bind(timer));
+
+let sidebar_button = document.getElementById("sidebar_button");
+sidebar_button.onclick = open_sidebar;
+
+document
+  .getElementById("main_container")
+  .addEventListener("click", close_sidebar);
 
 async function start() {
   let entered_words = {};
 
-  const word_length = 8;
   let word = await get_random_word(word_length);
   word = word.toUpperCase();
   console.log("Random word: ", word);
 
   let letters = scramble(word);
-  set_letters(letters);
 
   clear_all_words_from_display();
   text_box.unlock_text_box();
