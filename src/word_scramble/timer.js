@@ -22,7 +22,6 @@ export class Timer {
         this.set_time_limit(this.time_);
         return;
       }
-      console.log("Clearing interval");
       clearInterval(this.timer_);
       this.set_time_text("Time has run out!");
       this.on_timer_finished_cb_();

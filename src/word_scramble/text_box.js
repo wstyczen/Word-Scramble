@@ -79,13 +79,13 @@ export class TextBox {
   async on_key_press(entered_words, event) {
     const word = this.get_text_box().value;
     if (event.key === "Enter") {
-      console.log("in on_key_press: ", entered_words);
       if (!this.is_part_anagram(entered_words, word)) {
         this.flash_text_box(Color.RED);
         return;
       }
       const dict_url = await get_dict_url(word);
       if (!dict_url) {
+        this.flash_warning_cb_("Not an english word!");
         this.flash_text_box(Color.RED);
         return;
       }
@@ -95,7 +95,6 @@ export class TextBox {
       this.flash_text_box(Color.GREEN, function () {
         clear_contents_cb();
       });
-      console.log(entered_words);
     }
   }
 

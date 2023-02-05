@@ -30,3 +30,12 @@ export async function get_dict_url(word) {
   if (data.length == 0) return null;
   return data[0]["sourceUrls"][0];
 }
+
+export async function get_random_word(length) {
+  const api_url = "http://random-word-api.herokuapp.com/";
+  let response = await fetch(api_url + "word?length=" + length);
+  if (!response.ok) return null;
+  let data = await response.json();
+  if (data.length == 0) return null;
+  return data[0];
+}
