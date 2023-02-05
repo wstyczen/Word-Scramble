@@ -1,4 +1,4 @@
-import { Color } from "./utility.js";
+import { Color, get_dict_url } from "./utility.js";
 import { add_entered_word_to_display } from "./utility.js";
 
 export class TextBox {
@@ -17,8 +17,9 @@ export class TextBox {
       "input",
       this.filter_contents.bind(this, letters)
     );
-    this.get_text_box().addEventListener("keypress", (e) =>
-      this.on_key_press.bind(this, entered_words)(e)
+    this.get_text_box().addEventListener(
+      "keypress",
+      async (e) => await this.on_key_press.bind(this, entered_words)(e)
     );
   }
 
@@ -32,6 +33,7 @@ export class TextBox {
 
   lock_text_box() {
     this.get_text_box().placeholder = "time has run out";
+    this.clear_contents();
     this.get_text_box().disabled = true;
   }
 
@@ -74,15 +76,20 @@ export class TextBox {
     if (t.value.length != starting_value.length) this.flash_text_box(Color.RED);
   }
 
-  on_key_press(entered_words, event) {
+  async on_key_press(entered_words, event) {
     const word = this.get_text_box().value;
     if (event.key === "Enter") {
       console.log("in on_key_press: ", entered_words);
-      if (!this.is_valid_word(entered_words, word)) {
+      if (!this.is_anagram(entered_words, word)) {
         this.flash_text_box(Color.RED);
         return;
       }
-      entered_words.push(word);
+      const dict_url = await get_dict_url(word);
+      if (!dict_url) {
+        this.flash_text_box(Color.RED);
+        return;
+      }
+      entered_words[word] = dict_url;
       add_entered_word_to_display(word);
       const clear_contents_cb = this.clear_contents.bind(this);
       this.flash_text_box(Color.GREEN, function () {
@@ -92,16 +99,12 @@ export class TextBox {
     }
   }
 
-  is_valid_word(entered_words, word) {
-    console.log("in is_valid_word:");
-    console.log("entered_words:", entered_words);
-    console.log("word: ", word);
-    console.log("includes: ", entered_words.includes(word));
+  is_anagram(entered_words, word) {
     if (word.length == 0) {
       this.flash_warning_cb_("No solution!");
       return false;
     }
-    if (entered_words.includes(word)) {
+    if (word in entered_words) {
       this.flash_warning_cb_("Word already entered!");
       return false;
     }

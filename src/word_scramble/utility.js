@@ -20,3 +20,12 @@ export function clear_all_words_from_display() {
     child = display.lastElementChild;
   }
 }
+
+export async function get_dict_url(word) {
+  const api_url = "https://api.dictionaryapi.dev/api/v2/entries/en/";
+  let response = await fetch(api_url + word);
+  if (!response.ok) return null;
+  let data = await response.json();
+  if (data.length == 0) return null;
+  return data[0]["sourceUrls"][0];
+}

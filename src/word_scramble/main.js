@@ -21,11 +21,15 @@ function scramble(word) {
   return [...word].sort(() => Math.random() - 0.5).join("");
 }
 
-let timer = new Timer(10);
+// const word = "playmakers";
+// const result = await get_dict_url(word);
+// console.log(word, result);
+
+let timer = new Timer(30);
 let text_box = new TextBox(timer.flash_warning.bind(timer));
 
 function start() {
-  let entered_words = [];
+  let entered_words = {};
   let word = "PLAYMAKER";
   word = word.toUpperCase();
   let letters = scramble(word);
