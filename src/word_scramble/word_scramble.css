@@ -52,10 +52,6 @@ body {
   color: white;
 }
 
-#time_limit {
-  color: red;
-}
-
 .entered_word {
   background-color: #17B169;
   color: white;
@@ -73,4 +69,17 @@ body {
   flex-wrap: wrap;
   width: 8cm;
   height: auto;
+}
+
+#restart_button_container {
+  margin-top: 0.5cm;
+  display: flex;
+  justify-content: center;
+}
+
+#restart_button {
+  background: transparent;
+  color: white;
+  visibility: hidden;
+  border: hidden;
 }
