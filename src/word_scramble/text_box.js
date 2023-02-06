@@ -2,18 +2,20 @@ import {
   Color,
   get_dict_url,
   get_letter_frequency,
-  set_letters,
+  set_letters_text,
 } from "./utility.js";
 import { add_entered_word_to_display } from "./utility.js";
 
 export class TextBox {
   constructor(flash_warning_cb) {
     this.flash_warning_cb_ = flash_warning_cb;
+    this.can_handle_enter_ = true;
   }
 
   reset(letters, entered_words) {
     this.letters_ = letters;
-    set_letters(letters, "");
+    set_letters_text(letters, "");
+    this.unlock_text_box();
     // To remove listeners - removeEventListener does not work with anything but
     // named, free functions
     let text_box = this.get_text_box();
@@ -36,7 +38,7 @@ export class TextBox {
 
   clear_contents() {
     this.get_text_box().value = "";
-    set_letters(this.letters_, "");
+    set_letters_text(this.letters_, "");
   }
 
   lock_text_box() {
@@ -86,12 +88,15 @@ export class TextBox {
       this.flash_warning_cb_("Invalid letter!");
       this.flash_text_box(Color.RED);
     }
-    set_letters(this.letters_, t.value);
+    set_letters_text(this.letters_, t.value);
   }
 
   async on_key_press(entered_words, event) {
     const word = this.get_text_box().value;
     if (event.key === "Enter") {
+      // To prevent multiple entries when enter is clicked rapidly
+      if (!this.can_handle_enter_) return;
+      this.can_handle_enter_ = false;
       if (!this.is_part_anagram(entered_words, word)) {
         this.flash_text_box(Color.RED);
         return;
@@ -108,7 +113,8 @@ export class TextBox {
       this.flash_text_box(Color.GREEN, function () {
         clear_contents_cb();
       });
-      set_letters(this.letters_, "");
+      set_letters_text(this.letters_, "");
+      this.can_handle_enter_ = true;
     }
   }
 

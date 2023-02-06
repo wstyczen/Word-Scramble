@@ -1,25 +1,23 @@
 import { Color } from "./utility.js";
 
 export class Timer {
-  constructor(time_limit, on_timer_finished_cb = null) {
-    this.starting_time_ = time_limit;
-    this.time_ = time_limit;
-    this.timer_ = this.init_timer();
+  constructor(on_timer_finished_cb = null) {
     this.on_timer_finished_cb_ = on_timer_finished_cb;
   }
 
-  restart() {
-    this.time_ = this.starting_time_;
-    clearInterval(this.timer_);
+  start(time_limit) {
+    this.starting_time_ = time_limit;
+    this.time_ = time_limit;
+    if (this.timer_) clearInterval(this.timer_);
     this.timer_ = this.init_timer();
   }
 
   init_timer() {
-    this.set_time_limit(this.time_);
+    this.set_time_limit_text(this.time_);
     return setInterval(() => {
       if (this.time_ > 0) {
         this.time_--;
-        this.set_time_limit(this.time_);
+        this.set_time_limit_text(this.time_);
         return;
       }
       clearInterval(this.timer_);
@@ -51,7 +49,7 @@ export class Timer {
     this.get_time_display_text().style.color = Color.RED;
   }
 
-  set_time_limit(seconds) {
+  set_time_limit_text(seconds) {
     this.get_time_display_text().innerHTML = `Time left: <b id="time_limit">${seconds}</b>s`;
     this.get_time_display_text().style.color = Color.WHITE;
     this.get_time_limit_text().style.color = this.get_time_coloring();
@@ -61,10 +59,13 @@ export class Timer {
     let time_limit = this.get_time_limit_text();
     if (!time_limit) return;
     let previous_time = parseInt(time_limit.innerHTML);
-    const set_time_limit_bound = this.set_time_limit.bind(this, previous_time);
+    const set_time_limit_text_bound = this.set_time_limit_text.bind(
+      this,
+      previous_time
+    );
     this.set_time_text(text);
     setTimeout(function () {
-      set_time_limit_bound();
+      set_time_limit_text_bound();
     }, 200);
   }
 }

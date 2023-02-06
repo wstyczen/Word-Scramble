@@ -31,12 +31,10 @@ function get_sidebar() {
 }
 
 export function open_sidebar() {
-  console.log("open sidebar");
-  get_sidebar().style.width = "150px";
+  get_sidebar().style.width = "200px";
 }
 
 export function close_sidebar() {
-  console.log("close sidebar");
   get_sidebar().style.width = "0";
 }
 
@@ -47,6 +45,10 @@ export async function get_dict_url(word) {
   let data = await response.json();
   if (data.length == 0) return null;
   return data[0]["sourceUrls"][0];
+}
+
+export function scramble(word) {
+  return [...word].sort(() => Math.random() - 0.5).join("");
 }
 
 export async function get_random_word(length) {
@@ -65,13 +67,12 @@ export function get_letter_frequency(word) {
   }, {});
 }
 
-export function set_letters(letters, input_text) {
-  console.log("in set_letters: ", input_text);
+export function set_letters_text(letters, input_text) {
   let used_letters_frequency = get_letter_frequency(input_text);
   let html = "";
   for (const c of letters) {
     if (used_letters_frequency[c] && used_letters_frequency[c] != 0) {
-      html += '<span style="color:#282828;">' + c + "</span>";
+      html += `<span style="color:#282828;">${c}</span>`;
       used_letters_frequency[c]--;
       continue;
     }

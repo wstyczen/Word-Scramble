@@ -9,6 +9,7 @@
 
     <script type="module" src="sidebar.js" defer></script>
     <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="toggle.css">
   </head>
 
 
@@ -16,7 +17,12 @@
     <div class="sidebar_container">
       <span class="sidebar_button" id="sidebar_button">&#9776;</span>
       <div id="sidebar" class="sidebar">
-
+        <p id="letter_input_header">Provide letter set</p>
+        <input class="text_box" id="letters_input" autocomplete="off" placeholder="scrambled letters"/>
+        <p id="time_limit_header">Time limit</p>
+        <input id="time_limit_input" class="number_box" type="number" name="quantity" min="10" max="300"/>
+        <p id="word_length_header">Word length</p>
+        <input id="word_length_input" class="number_box" type="number" name="quantity" min="3" max="15"/>
       </div>
     </div>
     <div class="main_container" id="main_container">
