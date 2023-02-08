@@ -52,7 +52,7 @@ export function scramble(word) {
 }
 
 export async function get_random_word(length) {
-  const api_url = "http://random-word-api.herokuapp.com/";
+  const api_url = "https://random-word-api.herokuapp.com/";
   let response = await fetch(api_url + "word?length=" + length);
   if (!response.ok) return null;
   let data = await response.json();
