@@ -117,7 +117,6 @@ export class TextBox {
         this.can_handle_enter_ = true;
         return;
       }
-      console.log("in enter");
       const dict_url = await get_dict_url(word);
       if (!dict_url) {
         this.flash_warning_cb_("Not an english word!");
