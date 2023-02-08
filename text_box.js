@@ -118,10 +118,7 @@ export class TextBox {
         return;
       }
       console.log("in enter");
-
-      // const dict_url = await get_dict_url(word);
-      dict_url = null;
-
+      const dict_url = await get_dict_url(word);
       if (!dict_url) {
         this.flash_warning_cb_("Not an english word!");
         this.flash_text_box(Color.RED);
