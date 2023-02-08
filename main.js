@@ -40,6 +40,7 @@ let time_limit_input = new NumberInput(
   300,
   function (value) {
     settings.time_limit = value;
+    timer.start(settings.time_limit);
   }
 );
 let must_use_letters_input = new NumberInput(
