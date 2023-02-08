@@ -49,25 +49,50 @@ export class LettersInput {
 }
 
 export class NumberInput {
-  constructor(element_name, starting_value, on_entered_cb) {
+  constructor(
+    element_name,
+    starting_value,
+    min_value,
+    max_value,
+    on_entered_cb
+  ) {
     this.element_name_ = element_name;
+    this.min_value = min_value;
+    this.max_value = max_value;
     this.get_input().placeholder = starting_value;
     this.get_input().addEventListener("keypress", (e) =>
       this.on_key_press.bind(this, on_entered_cb)(e)
     );
   }
 
+  set_max_value(value) {
+    self.max_value = value;
+  }
+
   get_input() {
     return document.getElementById(this.element_name_);
   }
 
+  flash_text_box(color, callback = null) {
+    this.get_input().style.backgroundColor = color;
+    const get_get_input_cb = this.get_input.bind(this);
+    setTimeout(function () {
+      get_get_input_cb().style.backgroundColor = Color.WHITE;
+      if (callback) callback();
+    }, 100);
+  }
+
   on_key_press(on_entered_cb, event) {
-    console.log("In on_key_press");
     if (event.key === "Enter") {
-      const time_limit = parseInt(this.get_input().value);
+      const input_value = parseInt(this.get_input().value);
       this.get_input().value = "";
-      this.get_input().placeholder = time_limit;
-      on_entered_cb(time_limit);
+      if (input_value < this.min_value || input_value > this.max_value) {
+        this.flash_text_box(Color.RED);
+        return;
+      }
+      this.flash_text_box(Color.GREEN);
+      this.get_input().placeholder = input_value;
+      on_entered_cb(input_value);
     }
   }
 }

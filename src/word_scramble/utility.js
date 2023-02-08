@@ -67,16 +67,20 @@ export function get_letter_frequency(word) {
   }, {});
 }
 
-export function set_letters_text(letters, input_text) {
+export function set_letters_text(letters, input_text, must_use_letters) {
   let used_letters_frequency = get_letter_frequency(input_text);
   let html = "";
-  for (const c of letters) {
+  for (const [i, c] of [...letters].entries()) {
     if (used_letters_frequency[c] && used_letters_frequency[c] != 0) {
       html += `<span style="color:#282828;">${c}</span>`;
       used_letters_frequency[c]--;
       continue;
     }
-    html += `<span style="color:white;">${c}</span>`;
+    if (i < must_use_letters) {
+      html += `<span style="color:red;">${c}</span>`;
+    } else {
+      html += `<span style="color:white;">${c}</span>`;
+    }
   }
   document.getElementById("letters").innerHTML = html;
 }

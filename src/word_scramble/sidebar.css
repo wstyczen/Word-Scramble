@@ -68,10 +68,31 @@
   top: 30px;
 }
 
-#word_length_header {
+#must_use_letters_header {
   top: 75px;
 }
 
-#word_length_input {
+#must_use_letters_input {
   top: 60px;
+}
+
+#word_length_header {
+  top: 105px;
+}
+
+#word_length_input {
+  top: 90px;
+}
+
+#randomize_header {
+  top: 140px;
+}
+
+#randomize_button {
+  position: absolute;
+  top: 133px;
+  right: 20px;
+  background: transparent;
+  color: white;
+  border: hidden;
 }

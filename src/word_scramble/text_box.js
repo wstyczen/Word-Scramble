@@ -10,11 +10,13 @@ export class TextBox {
   constructor(flash_warning_cb) {
     this.flash_warning_cb_ = flash_warning_cb;
     this.can_handle_enter_ = true;
+    this.must_use_letters_ = 0;
   }
 
-  reset(letters, entered_words) {
+  reset(letters, entered_words, must_use_letters) {
     this.letters_ = letters;
-    set_letters_text(letters, "");
+    this.must_use_letters_ = must_use_letters;
+    set_letters_text(letters, "", must_use_letters);
     this.unlock_text_box();
     // To remove listeners - removeEventListener does not work with anything but
     // named, free functions
@@ -36,9 +38,14 @@ export class TextBox {
     return document.getElementById("text_box");
   }
 
+  set_must_use_letters(nr) {
+    this.must_use_letters_ = nr;
+    set_letters_text(this.letters_, "", this.must_use_letters_);
+  }
+
   clear_contents() {
     this.get_text_box().value = "";
-    set_letters_text(this.letters_, "");
+    set_letters_text(this.letters_, "", this.must_use_letters_);
   }
 
   lock_text_box() {
@@ -88,7 +95,15 @@ export class TextBox {
       this.flash_warning_cb_("Invalid letter!");
       this.flash_text_box(Color.RED);
     }
-    set_letters_text(this.letters_, t.value);
+    set_letters_text(this.letters_, t.value, this.must_use_letters_);
+  }
+
+  satisfies_must_use_letters(text) {
+    for (const [i, c] of [...this.letters_].entries()) {
+      if (i >= this.must_use_letters_) return true;
+      if (!text.includes(c)) return false;
+    }
+    return false;
   }
 
   async on_key_press(entered_words, event) {
@@ -99,12 +114,21 @@ export class TextBox {
       this.can_handle_enter_ = false;
       if (!this.is_part_anagram(entered_words, word)) {
         this.flash_text_box(Color.RED);
+        this.can_handle_enter_ = true;
         return;
       }
+      console.log("in enter");
       const dict_url = await get_dict_url(word);
       if (!dict_url) {
         this.flash_warning_cb_("Not an english word!");
         this.flash_text_box(Color.RED);
+        this.can_handle_enter_ = true;
+        return;
+      }
+      if (!this.satisfies_must_use_letters(word)) {
+        this.flash_warning_cb_("Unsatisfied must-use letters!");
+        this.flash_text_box(Color.RED);
+        this.can_handle_enter_ = true;
         return;
       }
       entered_words[word] = dict_url;
@@ -113,7 +137,7 @@ export class TextBox {
       this.flash_text_box(Color.GREEN, function () {
         clear_contents_cb();
       });
-      set_letters_text(this.letters_, "");
+      set_letters_text(this.letters_, "", this.must_use_letters_);
       this.can_handle_enter_ = true;
     }
   }
